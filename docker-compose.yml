@@ -1,11 +1,29 @@
 version: "3.9"
 
 services:
+    database:
+        image: postgres
+        container_name: database-master_rents
+        restart: always
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=master-rents
+        volumes:
+            - pgdata:/data/postgres
+        network_mode: host
     app:
         build: .
         container_name: master-rents
+        restart: always
         volumes:
             - .:/usr/src/app
         ports:
             - 8080:8080
-        command: npm run dev
+        network_mode: host
+
+volumes:
+    pgdata:
+        driver: local
